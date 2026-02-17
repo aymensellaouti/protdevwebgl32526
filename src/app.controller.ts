@@ -1,7 +1,15 @@
 import { Body, Controller, Get, Inject, Param, Post, Req } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Request } from 'express';
-
+import { IsNotEmpty, IsNumber, MinLength } from 'class-validator';
+export class SkillDto {
+  @IsNotEmpty()
+  name: string;
+  @MinLength(5)
+  description: string;
+  @IsNumber()
+  priority: number;
+}
 @Controller('user')
 export class AppController {
   // HAw chneya nhab
@@ -14,12 +22,16 @@ export class AppController {
 
   @Post(':id')
   addSkillToUser(
-    @Body() skill,
+    @Body() skill: SkillDto,
     @Param('id') id,
     @Req() request: Request
-  ): string {
+  ): SkillDto {
+    console.log(skill);
+    
    // console.log(request);
     
-    return skill + id;
+    return skill;
   }
 }
+
+
