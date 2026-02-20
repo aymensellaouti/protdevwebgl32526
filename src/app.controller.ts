@@ -10,7 +10,10 @@ export class SkillDto {
   @IsNumber()
   priority: number;
 }
-@Controller('user')
+@Controller({
+  path:'user',
+  version: '1'
+})
 export class AppController {
   // HAw chneya nhab
   constructor(@Inject(AppService) private appService: AppService) {}

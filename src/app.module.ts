@@ -2,9 +2,27 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ValidationArguments } from 'class-validator/types/validation/ValidationArguments';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './user/user.module';
+import { UserEntity } from './user/entity/user.entity';
+import { CommonModule } from './common/common.module';
 
 @Module({
-  imports: [],
+  imports: [
+    TypeOrmModule.forRoot({
+      database: 'gl32526',
+      host: 'localhost',
+      username: 'root',
+      password: '',
+      type:'mysql',
+      //entities: [UserEntity],
+      autoLoadEntities: true,
+      synchronize: true,
+      logging: true
+    }),
+    UserModule,
+    CommonModule
+  ],
   controllers: [AppController],
   providers: [AppService],
   // exports: [AppService],
