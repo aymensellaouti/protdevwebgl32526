@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, NotFoundException, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { AddUserDto } from './dto/add-user.dto';
 import { UserService } from './user.service';
 import { UserEntity } from './entity/user.entity';
@@ -7,6 +7,16 @@ import { UpdateResult } from 'typeorm';
 @Controller('user')
 export class UserController {
     constructor(private userService: UserService) {}
+
+    @Get()
+    findAll() {
+        return this.userService.findAll();
+    }    
+    @Get('qb')
+    findAllQb() {
+        return this.userService.findWithQB(new Date(), new Date());
+    }
+
     @Post()
     createUser(
         @Body() addUserDto: AddUserDto

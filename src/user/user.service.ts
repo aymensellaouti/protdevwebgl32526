@@ -1,28 +1,27 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository, UpdateResult } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
 import { UserEntity } from './entity/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { AddUserDto } from './dto/add-user.dto';
+import { GenericCrud } from '../common/db/generic-crud.service';
+import { minDate } from 'class-validator';
+import { qdDateInterval } from '../common/db/helpers';
 
 @Injectable()
-export class UserService {
-    async softdelete(id: number): Promise<UpdateResult> {
-        const result = await this.userRepository.softDelete(id);
-        if (!result.affected) throw new NotFoundException();
-        return result;
-    }
-    async restore(id: number): Promise<UpdateResult> {
-        const result = await this.userRepository.restore(id);
-        if (!result.affected) throw new NotFoundException();
-        return result;
-    }
+export class UserService extends GenericCrud<UserEntity>{
 
     constructor(
         @InjectRepository(UserEntity)
-        protected userRepository: Repository<UserEntity>
-    ) {}
+        userRepository: Repository<UserEntity>
+    ) {
+        super(userRepository)
+    }
 
-    create(addUserDto: AddUserDto): Promise<UserEntity> {
-        return this.userRepository.save(addUserDto);
+    findWithQB(minDate: Date, maxDate: Date) {
+        const qb = this.userRepository.createQueryBuilder('user');
+        // qb.where(`createdAt >= :minDate`, {minDate} )
+        //     .andWhere(`createdAt <= :maxDate`, {maxDate})
+        // console.log(qb);
+        qdDateInterval(qb, 'cretaedAt', minDate, maxDate)
+
     }
 }

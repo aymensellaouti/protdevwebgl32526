@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { UserEntity } from './user/entity/user.entity';
 import { CommonModule } from './common/common.module';
+import { SkillModule } from './skill/skill.module';
 
 @Module({
   imports: [
@@ -21,10 +22,14 @@ import { CommonModule } from './common/common.module';
       logging: true
     }),
     UserModule,
-    CommonModule
+    CommonModule,
+    SkillModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [{
+    useClass: AppService,
+    provide: AppService
+  }],
   // exports: [AppService],
 })
 export class AppModule { }
