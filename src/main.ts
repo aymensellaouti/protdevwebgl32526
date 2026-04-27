@@ -10,7 +10,8 @@ async function bootstrap() {
     whitelist: true,
     forbidNonWhitelisted: false
   }));
-  app.useGlobalInterceptors(new TransformInterceptor());
+  //app.useGlobalInterceptors(new TransformInterceptor());
+  app.enableCors({origin: '*'})
   app.enableVersioning({
     type: VersioningType.URI
   })

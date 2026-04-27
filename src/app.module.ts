@@ -7,6 +7,7 @@ import { UserModule } from './user/user.module';
 import { UserEntity } from './user/entity/user.entity';
 import { CommonModule } from './common/common.module';
 import { SkillModule } from './skill/skill.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { SkillModule } from './skill/skill.module';
     }),
     UserModule,
     CommonModule,
-    SkillModule
+    EventEmitterModule.forRoot(),
+    SkillModule,
   ],
   controllers: [AppController],
   providers: [{
